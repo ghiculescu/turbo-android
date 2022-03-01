@@ -4,6 +4,7 @@ import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dev.hotwire.turbo.BuildConfig
+import dev.hotwire.turbo.activities.TurboActivity
 import dev.hotwire.turbo.config.TurboPathConfiguration
 import dev.hotwire.turbo.demo.features.imageviewer.ImageViewerFragment
 import dev.hotwire.turbo.demo.features.numbers.NumberBottomSheetFragment
@@ -13,6 +14,7 @@ import dev.hotwire.turbo.demo.features.web.WebFragment
 import dev.hotwire.turbo.demo.features.web.WebHomeFragment
 import dev.hotwire.turbo.demo.features.web.WebModalFragment
 import dev.hotwire.turbo.demo.util.HOME_URL
+import dev.hotwire.turbo.demo.util.NavHandler
 import dev.hotwire.turbo.demo.util.initDayNightTheme
 import dev.hotwire.turbo.session.TurboSessionNavHostFragment
 import kotlin.reflect.KClass
@@ -46,6 +48,11 @@ class MainSessionNavHostFragment : TurboSessionNavHostFragment() {
         super.onSessionCreated()
         session.webView.settings.userAgentString = customUserAgent(session.webView)
         session.webView.initDayNightTheme()
+
+        val activity = requireActivity() as TurboActivity
+        session.webView.addJavascriptInterface(
+            NavHandler(activity), NavHandler.name
+        )
 
         if (BuildConfig.DEBUG) {
             session.setDebugLoggingEnabled(true)

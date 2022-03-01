@@ -32,6 +32,16 @@ open class WebFragment : TurboWebFragment(), NavDestination {
         }
     }
 
+    override fun onVisitCompleted(location: String, completedOffline: Boolean) {
+        super.onVisitCompleted(location, completedOffline)
+
+        val snippet = """
+        window.nativeNavTo = (url) => { NavHandler.nav(url) }
+        """
+
+        session.webView.evaluateJavascript(snippet, null)
+    }
+
     private fun setupMenu() {
         toolbarForNavigation()?.inflateMenu(R.menu.web)
     }
